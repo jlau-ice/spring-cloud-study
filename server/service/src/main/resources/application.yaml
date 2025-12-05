@@ -1,0 +1,59 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: service
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://${ice.db.host}:3308/spring_cloud?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ${ice.db.pw}
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+  global-config:
+    db-config:
+      update-strategy: not_null
+      id-type: auto
+logging:
+  level:
+    com.ice: debug
+  pattern:
+    dateformat: HH:mm:ss:SSS
+  file:
+    path: "logs/${spring.application.name}"
+knife4j:
+  enable: true
+  openapi:
+    title: ice
+    description: "冰块商城接口文档"
+    email: jlau.ice@hmail.com
+    concat: ice
+    url: https://dryice.icu
+    version: v1.0.0
+    group:
+      default:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - com.ice.controller
+ice:
+  jwt:
+    location: classpath:ice.jks
+    alias: ice
+    password: ice5626
+    tokenTTL: 30m
+  auth:
+    excludePaths:
+      - /search/**
+      - /users/login
+      - /items/**
+      - /hi
+#  keytool -genkeypair \
+#  -alias ice \
+#  -keyalg RSA \
+#  -keypass 5626.. \
+#  -keystore ice.jks \
+#  -storepass 5626..

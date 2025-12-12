@@ -1,12 +1,12 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: item-service
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://${ice.db.host}:3308/spring_cloud?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${ice.db.host}:3308/cloud_item?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ${ice.db.pw}

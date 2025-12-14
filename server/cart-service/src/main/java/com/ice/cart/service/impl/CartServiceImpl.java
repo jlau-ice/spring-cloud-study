@@ -1,33 +1,25 @@
 package com.ice.cart.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ice.cart.client.ItemClient;
-import com.ice.common.exception.BizIllegalException;
-import com.ice.common.utils.BeanUtils;
-import com.ice.common.utils.CollUtils;
-import com.ice.common.utils.UserContext;
+import com.ice.api.client.ItemClient;
+import com.ice.api.dto.ItemDTO;
 import com.ice.cart.domain.dto.CartFormDTO;
-import com.ice.cart.domain.dto.ItemDTO;
 import com.ice.cart.domain.po.Cart;
 import com.ice.cart.domain.vo.CartVO;
 import com.ice.cart.mapper.CartMapper;
 import com.ice.cart.service.ICartService;
-// import com.ice.cart.service.IItemService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.ice.common.exception.BizIllegalException;
+import com.ice.common.utils.BeanUtils;
+import com.ice.common.utils.CollUtils;
+import com.ice.common.utils.UserContext;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -42,18 +34,9 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements ICartService {
 
-    // private final IItemService itemService;
-    private final DiscoveryClient discoveryClient;
-
-    private final RestTemplate restTemplate;
-
     private final ItemClient itemClient;
 
-    public CartServiceImpl(RestTemplate restTemplate,
-                           @Qualifier("compositeDiscoveryClient") DiscoveryClient discoveryClient,
-                           ItemClient itemClient) {
-        this.restTemplate = restTemplate;
-        this.discoveryClient = discoveryClient;
+    public CartServiceImpl(ItemClient itemClient) {
         this.itemClient = itemClient;
     }
 

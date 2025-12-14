@@ -1,4 +1,4 @@
-package com.ice.cart.domain.dto;
+package com.ice.api.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

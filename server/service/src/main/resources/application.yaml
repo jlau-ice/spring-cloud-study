@@ -29,7 +29,7 @@ knife4j:
   openapi:
     title: ice
     description: "冰块商城接口文档"
-    email: jlau.ice@hmail.com
+    email: jlau.ice@gmail.com
     concat: ice
     url: https://dryice.icu
     version: v1.0.0

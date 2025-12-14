@@ -5,6 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ice.cart.client.ItemClient;
 import com.ice.common.exception.BizIllegalException;
 import com.ice.common.utils.BeanUtils;
 import com.ice.common.utils.CollUtils;
@@ -46,10 +47,14 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
 
     private final RestTemplate restTemplate;
 
+    private final ItemClient itemClient;
+
     public CartServiceImpl(RestTemplate restTemplate,
-                           @Qualifier("compositeDiscoveryClient") DiscoveryClient discoveryClient) {
+                           @Qualifier("compositeDiscoveryClient") DiscoveryClient discoveryClient,
+                           ItemClient itemClient) {
         this.restTemplate = restTemplate;
         this.discoveryClient = discoveryClient;
+        this.itemClient = itemClient;
     }
 
     @Override
@@ -97,22 +102,9 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
     private void handleCartItems(List<CartVO> vos) {
         // 1.获取商品id
         Set<Long> itemIds = vos.stream().map(CartVO::getItemId).collect(Collectors.toSet());
-        List<ServiceInstance> instances = discoveryClient.getInstances("item-service");
-        ServiceInstance instance = instances.get(RandomUtil.randomInt(instances.size()));
-        ResponseEntity<List<ItemDTO>> response = restTemplate.exchange(
-                instance.getUri() + "/items?ids={ids}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<ItemDTO>>() {
-                },
-                Map.of("ids", CollUtil.join(itemIds, ","))
-        );
-        // 2.2.解析响应
-        if(!response.getStatusCode().is2xxSuccessful()){
-            // 查询失败，直接结束
-            return;
-        }
-        List<ItemDTO> items = response.getBody();
+        List<ItemDTO> items = itemClient.queryItemByIds(itemIds);
+        // 2.查询商品
+        // List<ItemDTO> items = itemService.queryItemByIds(itemIds);
         if (CollUtils.isEmpty(items)) {
             return;
         }
@@ -128,23 +120,6 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
             v.setStatus(item.getStatus());
             v.setStock(item.getStock());
         }
-        // 2.查询商品
-        // List<ItemDTO> items = itemService.queryItemByIds(itemIds);
-        // if (CollUtils.isEmpty(items)) {
-        //     return;
-        // }
-        // 3.转为 id 到 item的map
-        // Map<Long, ItemDTO> itemMap = items.stream().collect(Collectors.toMap(ItemDTO::getId, Function.identity()));
-        // 4.写入vo
-        // for (CartVO v : vos) {
-        //     ItemDTO item = itemMap.get(v.getItemId());
-        //     if (item == null) {
-        //         continue;
-        //     }
-        //     v.setNewPrice(item.getPrice());
-        //     v.setStatus(item.getStatus());
-        //     v.setStock(item.getStock());
-        // }
     }
 
     @Override

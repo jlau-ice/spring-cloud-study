@@ -1,4 +1,4 @@
-package com.ice.enums;
+package com.ice.user.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.ice.common.exception.BadRequestException;

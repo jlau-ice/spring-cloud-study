@@ -48,12 +48,6 @@ ice:
     alias: ice
     password: ice5626
     tokenTTL: 30m
-  auth:
-    excludePaths:
-      - /search/**
-      - /users/login
-      - /items/**
-      - /hi
 feign:
   okhttp:
     enabled: true

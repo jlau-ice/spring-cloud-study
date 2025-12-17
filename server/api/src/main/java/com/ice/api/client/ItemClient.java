@@ -1,6 +1,7 @@
 package com.ice.api.client;
 
 import com.ice.api.dto.ItemDTO;
+import com.ice.api.dto.OrderDetailDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,4 +14,7 @@ public interface ItemClient {
 
     @GetMapping("/items")
     List<ItemDTO> queryItemByIds(@RequestParam("ids") Collection<Long> ids);
+
+    @GetMapping("/items/stock/deduct")
+    void deductStock(List<OrderDetailDTO> items);
 }

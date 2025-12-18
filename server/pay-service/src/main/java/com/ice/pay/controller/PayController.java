@@ -1,8 +1,10 @@
 package com.ice.pay.controller;
 
 import com.ice.common.exception.BizIllegalException;
+import com.ice.common.utils.BeanUtils;
 import com.ice.pay.domain.dto.PayApplyDTO;
 import com.ice.pay.domain.dto.PayOrderFormDTO;
+import com.ice.pay.domain.vo.PayOrderVO;
 import com.ice.pay.enums.PayType;
 import com.ice.pay.service.IPayOrderService;
 import io.swagger.annotations.Api;
@@ -10,6 +12,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = "支付相关接口")
 @RestController
@@ -36,4 +40,12 @@ public class PayController {
         payOrderFormDTO.setId(id);
         payOrderService.tryPayOrderByBalance(payOrderFormDTO);
     }
+
+
+    @ApiOperation("查询支付单")
+    @GetMapping
+    public List<PayOrderVO> queryPayOrders(){
+        return BeanUtils.copyList(payOrderService.list(), PayOrderVO.class);
+    }
+
 }

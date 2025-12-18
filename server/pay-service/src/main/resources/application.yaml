@@ -41,7 +41,7 @@ knife4j:
         group-name: default
         api-rule: package
         api-rule-resources:
-          - com.ice.trade.controller
+          - com.ice.pay.controller
 feign:
   okhttp:
     enabled: true

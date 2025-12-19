@@ -7,6 +7,8 @@ spring:
     nacos:
       server-addr: 127.0.0.1:8848
     gateway:
+      # default-filters:
+      #   - PrintAny
       routes:
         - id: item # 路由规则id，自定义，唯一
           uri: lb://item-service # 路由的目标服务，lb代表负载均衡，会从注册中心拉取服务列表
@@ -28,3 +30,15 @@ spring:
           uri: lb://pay-service
           predicates:
             - Path=/pay-orders/**
+ice:
+  jwt:
+    location: classpath:ice.jks
+    alias: ice
+    password: ice5626
+    tokenTTL: 30m
+  auth:
+    excludePaths:
+      - /search/**
+      - /users/login
+      - /items/**
+      - /hi

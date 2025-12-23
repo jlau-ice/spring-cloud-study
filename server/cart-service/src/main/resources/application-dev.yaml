@@ -1,4 +1,8 @@
 ice:
   db:
     host: 127.0.0.1
+    un: root
     pw: sxkj0818web
+    database: cloud_cart
+  swagger:
+    package: com.ice.cart.controller

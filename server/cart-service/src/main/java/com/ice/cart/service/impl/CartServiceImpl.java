@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ice.api.client.ItemClient;
 import com.ice.api.dto.ItemDTO;
+import com.ice.cart.config.CartProperties;
 import com.ice.cart.domain.dto.CartFormDTO;
 import com.ice.cart.domain.po.Cart;
 import com.ice.cart.domain.vo.CartVO;
@@ -36,8 +37,11 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
 
     private final ItemClient itemClient;
 
-    public CartServiceImpl(ItemClient itemClient) {
+    private final CartProperties cartProperties;
+
+    public CartServiceImpl(ItemClient itemClient, CartProperties cartProperties) {
         this.itemClient = itemClient;
+        this.cartProperties = cartProperties;
     }
 
     @Override
@@ -117,8 +121,8 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements IC
 
     private void checkCartsFull(Long userId) {
         int count = lambdaQuery().eq(Cart::getUserId, userId).count();
-        if (count >= 10) {
-            throw new BizIllegalException(StrUtil.format("用户购物车课程不能超过{}", 10));
+        if (count >= cartProperties.getMaxAmount()) {
+            throw new BizIllegalException(StrUtil.format("用户购物车课程不能超过{}", cartProperties.getMaxAmount()));
         }
     }
 

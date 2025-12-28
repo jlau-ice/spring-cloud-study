@@ -3,3 +3,6 @@ server:
 feign:
   okhttp:
     enabled: true
+ice:
+  cart:
+    maxAmount: 10

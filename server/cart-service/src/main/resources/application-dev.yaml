@@ -1,8 +1,13 @@
 ice:
   db:
     host: 127.0.0.1
+    port: 3308
     un: root
     pw: sxkj0818web
     database: cloud_cart
   swagger:
+    title: 购物车服务接口文档
+    description: 冰块商城接口文档
+    email: jlau.ice@gmail.com
+    concat: ice
     package: com.ice.cart.controller
